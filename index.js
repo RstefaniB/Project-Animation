@@ -1,12 +1,8 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
-
-
-
-
+canvas.width = window.innerWidth 
+canvas.height = window.innerHeight 
 
 class Player {
     constructor() {
@@ -20,27 +16,58 @@ class Player {
             x: 0,
             y: 0
         }
+        this.result = this.velocity.y / 0.850903
     }
     draw() {
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        c.fillStyle = 'blue'
 
+    }
+    update() {
+        player.draw()
+        this.position.y += this.velocity.y
+        this.position.x += this.velocity.x
+
+        if (this.position.y + this.height > canvas.height)
+            this.position.y = canvas.height * 0.92 // ojo bug
+        
+        if (this.position.x < 0)
+            this.position.x = 0
+        if (this.position.y < 0)
+            this.position.y = 0
+    }
+}
+
+class Obstacle {
+    constructor () {
+        this.position = {
+            x: innerWidth - 100,
+            y: innerHeight * 0.2
+        }
+        this.width = 30
+        this.height = 30
+    }        
+    draw() {
+        c.fillRect(this.position.x, this.position.y, this.width, this.height);
+        c.fillStyle = 'red';
     }
     update() {
         this.draw()
         this.position.y += this.velocity.y
         this.position.x += this.velocity.x
 
-        if (this.position.y + this.height > canvas.height)
-            this.velocity.y = 0
-        if (this.position.x < 0)
-            this.position.x = 0
-        if (this.position.y < 0)
-            this.velocity.y = 0
-    }
+        
+    }   
+  
 }
+        
 
-const player = new Player()
-player.update()
+const player = new Player() 
+const obstacle = new Obstacle()
+
+
+
+
 
 key = {
     right: {
@@ -51,7 +78,6 @@ key = {
     },
     up: {
         pressed: false
-
     },
     down: {
         pressed: false
@@ -64,28 +90,13 @@ function animation() {
     requestAnimationFrame(animation)
     c.clearRect(0, 0, canvas.width, canvas.height)
     player.update()
+    obstacle.draw()
+    continuity()
 
-    if (key.left.pressed) {
-        player.velocity.x = -5
-    }
-    else if (key.right.pressed) {
-        player.velocity.x = 5
-    } else{
-        player.velocity.x = 0
-    }
-
-
-    if (key.up.pressed) {    
-            player.velocity.y = -5
-    }
-     else if (key.down.pressed) {
-            player.velocity.y = 5
-    }else{
-        player.velocity.y = 0
-    }
+    
     
 }
-
+// tratar de mejorar el movimiento
 
 animation()
 
@@ -138,4 +149,45 @@ window.addEventListener('keyup', ({ keyCode }) => {
 
     }
 })
+
+function continuity() {
+    if (key.left.pressed) {
+        player.velocity.x = -5
+    }
+    else if (key.right.pressed) {
+        player.velocity.x = 5
+    } else{
+        player.velocity.x = 0
+    }
+    if (key.up.pressed) {    
+            player.velocity.y = -5
+    }
+    else if (key.down.pressed) {
+            player.velocity.y = 5
+    }else{
+        player.velocity.y = 0
+    }
+
+    if (key.left.pressed && key.right.pressed) {
+        player.velocity.x = -5 
+        player.velocity.y = 0
+    }
+    if (key.up.pressed && key.down.pressed) {
+        player.velocity.x = 0 
+        player.velocity.y = -5    
+    
+    }
+    // if (key.up.pressed && key.right.pressed) {
+    //     // player.velocity.x = 2.5
+    //     player.velocity.y = -5
+    //     player.result = player.velocity.y / 0.85
+        
+
+    // }
+}
+
+// function result () {
+//     player.result = player.velocity.y / 0.85
+    
+// }
 
