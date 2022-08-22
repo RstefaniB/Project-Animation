@@ -1,31 +1,30 @@
-// class Bullet {
-//     constructor(c, positionX, positionY) {
-//         this.c = c
-//         this.positionX = positionX
-//         this.positionY = positionY
-//         this.velocity = 10
-//         this.radius = 3
+class Bullet {
+    constructor(c, positionX, positionY) {
+        this.c = c
+        this.positionX = positionX
+        this.positionY = positionY
+        this.velocity = 3
+        this.radius = 3
 
-//     }
+    }
 
-//     draw() {
-//         c.beginPath()
-//         c.arc(this.positionX, this.positionY, this.radius,
-//             0, Math.PI * 2)
-//         c.fillStyle = 'red'
-//         c.fill()
-//         c.closePath()
+    draw() {
+        c.beginPath()
+        c.arc(this.positionX, this.positionY, this.radius,
+            0, Math.PI * 2)
+        c.fillStyle = 'red'
+        c.fill()
+        c.closePath()
 
-//     }
-//     update() {
-//         this.draw()
-//         this.positionX += this.velocityX
-//         this.positionY += this.velocityY  
-//         this.oneShot() 
-            
+    }
+    update() {
+        this.draw()
+        this.positionX += this.velocity
 
-            
-//     }
+        
+        // this.oneShot() 
+    }
+       
     // oneShot() {
     //     if (this.player.key.space.pressed) {
             
@@ -40,7 +39,11 @@
 
     //     }
     // }
-// }
+}
+
+
+            
+ 
 
 
 // function shouting() {

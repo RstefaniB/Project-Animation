@@ -11,7 +11,7 @@ class Player {
             y: 0
         }
         this.rotation = 0
-        
+        this.bullets = []
         
         const image = new Image()
         image.src = '/cupHead/Images/pngwing.com (5).png'
@@ -75,6 +75,10 @@ class Player {
     continuity() {
         if (this.key.left.pressed) {
             this.velocity.x = -5
+
+
+
+
         }
         else if (this.key.right.pressed) {
             this.velocity.x = 5
@@ -90,8 +94,28 @@ class Player {
         }else{
             this.velocity.y = 0
         }
-        if (this.key.space.pressed)
-            // one_shot()
+        if (this.key.space.pressed){
+            const bullet = new Bullet(c, this.position.x + this.width / 2, this.position.y + this.height / 2)
+                this.bullets.push(bullet)
+
+
+            }
+
+            
+       
+        //     oneShot() {
+        //     counter++
+
+        //     this.bullets.forEach(el => {
+        //         el.update()
+        //     })
+        //     if (this.player.key.space.pressed) {
+        //         const bullet = new Bullet(c, this.player.position.x + this.player.width / 2, this.player.position.y + this.player.height / 2)
+        //         this.bullets.push(bullet)
+
+
+        //     }
+        // }
         
     
         if (this.key.left.pressed && this.key.right.pressed) {
