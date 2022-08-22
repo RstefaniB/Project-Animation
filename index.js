@@ -8,19 +8,43 @@ class Player {
     constructor() {
         this.position = {
             x: canvas.width * 0.1,
-            y: canvas.height / 2
+            y: canvas.height / 4
         }
-        this.width = 50
-        this.height = 50
+        // this.width = 100
+        // this.height = 100
         this.velocity = {
             x: 0,
             y: 0
         }
+        this.rotation = 0
         this.result = this.velocity.y / 0.850903
+        
+        const image = new Image()
+        image.src = './pngwing.com (5).png'
+        image.onload = () => {
+            const scale = 0.05
+            this.image = image
+            this.width = image.width * scale
+            this.height = image.height * scale
+            this.position = {
+                x: canvas.width / 2 - this.width /2,
+                y: canvas.height / 4
+            }
+        }
+        
+       
     }
+    
+
     draw() {
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
-        c.fillStyle = 'blue'
+        // c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        // c.fillStyle = 'blue'
+        
+        if (this.image) 
+        c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
+        
+
+
 
     }
     update() {
@@ -35,6 +59,8 @@ class Player {
             this.position.x = 0
         if (this.position.y < 0)
             this.position.y = 0
+        if (this.position.y + this.height > canvas.height)
+            this.position.y = canvas.height - this.height
     }
 }
 
@@ -48,8 +74,9 @@ class Obstacle {
         this.height = 30
     }        
     draw() {
+        c.fillStyle = 'black';
         c.fillRect(this.position.x, this.position.y, this.width, this.height);
-        c.fillStyle = 'red';
+        
     }
     update() {
         this.draw()
@@ -60,10 +87,71 @@ class Obstacle {
     }   
   
 }
+
+class Boss {
+    constructor () {
+        this.position = {
+            x: 800,
+            y:0
+        }
+        this.width = 400
+        this.height = 400
+    }
+         draw() { 
+        c.fillStyle = 'red'
+        c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
+        }
+    
+    update() {
+        this.draw()
+        this.position.y += this.velocity.y
+        this.position.x += this.velocity.x
+
+
+    }
+}
+
+
+class Meteorite {
+    
+}
+
+class Bullet {
+    constructor({ position, velocity }){
+        this.position = position
+        this.velocity = velocity
+        this.radius = 3
+        
+    }
+    draw() {
+        c.beginPath()
+        c.arc(this.position.x, this.position.y, this.radius, 
+            0 , Math.PI * 2)
+        c.fillStyle = 'red'
+        c.fill()
+        c.closePath()
+
+    }
+    update() {
+        this.draw()
+        this.position.y += this.velocity.y
+        this.position.x += this.velocity.x
+    }
+}
         
 
 const player = new Player() 
 const obstacle = new Obstacle()
+const bullets = [new Bullet( {position: {
+    x: player.position.x,
+    y: player.position.y
+},
+velocity:{
+    x: -5,
+    y: 0
+}})]
+
+
 
 
 
@@ -81,6 +169,9 @@ key = {
     },
     down: {
         pressed: false
+    },
+    space: {
+        pressed: false
     }
 }
 
@@ -90,9 +181,15 @@ function animation() {
     requestAnimationFrame(animation)
     c.clearRect(0, 0, canvas.width, canvas.height)
     player.update()
+    projectile() 
     obstacle.draw()
+   
     continuity()
-
+    
+    // shouting()
+    
+    
+ 
     
     
 }
@@ -121,6 +218,12 @@ window.addEventListener('keydown', ({ keyCode }) => {
             // player.velocity.x = 5
             key.right.pressed = true
             break;
+        case 32:
+            one_shot()
+            key.space.pressed = true
+            
+            break;
+        
 
     }
 })
@@ -145,6 +248,11 @@ window.addEventListener('keyup', ({ keyCode }) => {
         case 68:
             // player.velocity.x = 0.5
             key.right.pressed = false
+            break;
+        case 32:
+            key.space.pressed = false
+            
+            break;
 
 
     }
@@ -156,7 +264,8 @@ function continuity() {
     }
     else if (key.right.pressed) {
         player.velocity.x = 5
-    } else{
+    } 
+    else{
         player.velocity.x = 0
     }
     if (key.up.pressed) {    
@@ -171,10 +280,12 @@ function continuity() {
     if (key.left.pressed && key.right.pressed) {
         player.velocity.x = -5 
         player.velocity.y = 0
+        player.rotation = .15
     }
     if (key.up.pressed && key.down.pressed) {
         player.velocity.x = 0 
         player.velocity.y = -5    
+        player.rotation = -.15
     
     }
     // if (key.up.pressed && key.right.pressed) {
@@ -191,3 +302,42 @@ function continuity() {
     
 // }
 
+
+function projectile() {
+    bullets.forEach(bullet => {
+       bullet.update()
+    })
+   
+}
+
+function shouting() {
+    if (key.space.pressed) 
+    {bullets.push(new Bullet( {position: {
+        x: player.position.x + player.width / 2,
+        y: player.position.y + player.height / 2
+    },
+    velocity: {
+        x: 1,
+        y: 0
+    }})
+    )
+    
+    }
+}
+
+
+function one_shot () {
+
+    bullets.push(new Bullet( {position: {
+        x: player.position.x + player.width / 2,
+        y: player.position.y + player.height / 2
+    },
+    velocity: {
+        x: 10,
+        y: 0
+    }})
+    )
+    console.log(bullets);
+    
+ 
+}
