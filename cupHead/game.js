@@ -59,7 +59,7 @@ const Game = {
 
 
 
-      // this.bossDamage()
+      this.bossDamage()
 
 
 
@@ -158,8 +158,8 @@ const Game = {
 
   bossDamage() {
     this.player.bullets.forEach(bullet => {
-      console.log(this.player.bullets);
-      if (bullet.position.x > boss.position.x) {
+      if (bullet.positionX > this.boss.position.x ) {
+
         this.bossHealth-- 
       if (this.bossHealth === 0) 
         console.log('win')        
