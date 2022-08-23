@@ -4,27 +4,51 @@ class Player {
             x: canvas.width * 0.1,
             y: canvas.height / 4
         }
-        // this.width = 100
-        // this.height = 100
+        this.width = 50
+        this.height = 50
         this.velocity = {
             x: 0,
             y: 0
         }
         this.rotation = 0
         this.bullets = []
+
         
-        const image = new Image()
-        image.src = '/Images/pngwing.com (6).png'
-        image.onload = () => {
-            const scale = 0.125
-            this.image = image
-            this.width = image.width * scale
-            this.height = image.height * scale
-            this.position = {
-                x: canvas.width / 2 - this.width /2,
-                y: canvas.height / 4
-            }
-        }
+        
+        // const image = new Image()
+        // image.src = '/Images/pngwing.com (6).png'
+        // image.onload = () => {
+        //     const scale = 0.125
+        //     this.image = image
+        //     this.width = image.width * scale
+        //     this.height = image.height * scale
+        //     this.position = {
+        //         x: canvas.width / 2 - this.width /2,
+        //         y: canvas.height / 4
+        //     }
+        // }
+
+
+        // for sprite
+        // const image = new Image()
+        // image.src = '/Images/standing.png'
+        // image.onload = () => {
+        //     const scale = .2 //0.125
+        //     this.image = image
+        //     this.width = image.width * 0.15 //* scale
+        //     this.height = image.height * 0.5 //* scale
+        //     this.position = {
+        //         x: canvas.width / 2 - this.width /2,
+        //         y: canvas.height / 4
+        //     }
+        // }
+        //end of sprite
+
+        // this.frame = 0
+        // this.image.frame = 0
+
+
+
         this.key = {
             right: {
                 pressed: false
@@ -48,15 +72,31 @@ class Player {
     
 
     draw() {
-        // c.fillRect(this.position.x, this.position.y, this.width, this.height)
-        // c.fillStyle = 'blue'
+   
         
-        if (this.image) 
-        c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
+        // if (this.image) 
+        // c.drawImage(this.image, 
+        //     185.34 *  this.frame,
+        //     0,
+        //     185.34 ,
+        //     230,
+        //     this.position.x, this.position.y, this.width, this.height)
+
+        
+            // if (this.image) 
+            c.filldraw = 'red'
+        c.fillRect(this.position.x, this.position.y, this.width, this.height);
+            
+            // c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
+        //end of sprite
         
     }
 
+    
     update() {
+        // this.frame++
+        // if (this.image.frame > 3) this.image.frame = 0
+    
         this.draw()
         this.position.y += this.velocity.y
         this.position.x += this.velocity.x
@@ -71,6 +111,12 @@ class Player {
         if (this.position.y + this.height > canvas.height)
             this.position.y = canvas.height - this.height
     }
+
+    // animate() {
+    //     this.image.frame++;
+    //     if (this.image.frame > 4) this.image.frame
+
+    // }
 
     continuity() {
         if (this.key.left.pressed) {
@@ -93,25 +139,15 @@ class Player {
         if (this.key.space.pressed){
             const bullet  = new Bullet(c, this.position.x + this.width / 2, this.position.y + this.height / 2)
             this.bullets.push(bullet)
+            
+       
+        
 
 
             }
 
             
        
-        //     oneShot() {
-        //     counter++
-
-        //     this.bullets.forEach(el => {
-        //         el.update()
-        //     })
-        //     if (this.player.key.space.pressed) {
-        //         const bullet = new Bullet(c, this.player.position.x + this.player.width / 2, this.player.position.y + this.player.height / 2)
-        //         this.bullets.push(bullet)
-
-
-        //     }
-        // }
         
     
         if (this.key.left.pressed && this.key.right.pressed) {
@@ -133,20 +169,20 @@ class Player {
         
             switch (keyCode) {
                 case 87:
-                    // player.velocity.y = -0.5
+             
                     this.key.up.pressed = false
                     break;
                 case 65:
-                    // player.velocity.x = -0.5
+                    
                     this.key.left.pressed = false
                     break;
                 case 83:
-                    // player.velocity.y = 0.5
+                 
                     this.key.down.pressed = false
         
                     break;
                 case 68:
-                    // player.velocity.x = 0.5
+                  
                     this.key.right.pressed = false
                     break;
                 case 32:
@@ -162,20 +198,20 @@ class Player {
             
             switch (keyCode) { 
                 case 87:
-                    // player.velocity.y = -5
+                
                     this.key.up.pressed = true
         
                     break;
                 case 65:
-                    // player.velocity.x = -5
+                   
                     this.key.left.pressed = true
                     break;
                 case 83:
-                    // player.velocity.y = 5
+                   
                     this.key.down.pressed = true
                     break;
                 case 68:
-                    // player.velocity.x = 5
+                   
                     this.key.right.pressed = true
                     break;
                 case 32:
@@ -192,7 +228,7 @@ class Player {
     
     
      
-}
+
 
 
 
@@ -277,4 +313,4 @@ class Player {
     //     }
     // })
     
-
+    }

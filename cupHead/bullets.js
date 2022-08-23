@@ -22,67 +22,24 @@ class Bullet {
         this.positionX += this.velocity
 
         
-        // this.oneShot() 
+       
+    }
+
+    shoting() {
+        this.player.bullets.forEach(el => {
+          el.update()
+        })
+        if (this.counter % 60 === 0) {
+          const bullet  = new Bullet(c, this.position.x + this.width / 2, this.position.y + this.height / 2)
+          this.bullets.push(bullet)
+
+        }
     }
        
-    // oneShot() {
-    //     if (this.player.key.space.pressed) {
-            
-
-    //     this.bullets.push(new Bullet(
-    //         c, this.player.position.x + this.player.width / 2,
-    //         this.player.position.y + this.player.height / 2
-
-
-    //     )
-    //     )
-
-    //     }
-    // }
 }
 
 
             
  
 
-
-// function shouting() {
-//     if (key.space.pressed) {
-//         bullets.push(new Bullet({
-//             position: {
-//                 x: player.position.x + player.width / 2,
-//                 y: player.position.y + player.height / 2
-//             },
-//             velocity: {
-//                 x: 1,
-//                 y: 0
-//             }
-//         })
-//         )
-
-//     }
-// }
-
-
-
-
-
-
-// function one_shot() {
-
-//     this.bullets.push(new Bullet({
-//         position: {
-//             x: player.positionX + player.width / 2,
-//             y: player.positionY + player.height / 2
-//         },
-//         velocity: {
-//             x: 10,
-//             y: 0
-//         }
-//     })
-//     )
-//     console.log(bullets);
-
-
-// }
 

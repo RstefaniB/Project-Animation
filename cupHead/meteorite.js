@@ -6,7 +6,7 @@ class Meteorite {
 
         this.width = 30
         this.height = 30
-        this.velocityX = -2;
+        this.velocityX = -1;
     }
     draw() {
         c.fillStyle = 'black';
@@ -17,12 +17,6 @@ class Meteorite {
         this.draw()
         this.x += this.velocityX
     }
-
-    delete() {
-        
-    }
-
-
 }
    
 
