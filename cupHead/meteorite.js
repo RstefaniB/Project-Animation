@@ -18,6 +18,10 @@ class Meteorite {
         this.x += this.velocityX
     }
 
+    delete() {
+        
+    }
+
 
 }
    

@@ -3,7 +3,7 @@ class Bullet {
         this.c = c
         this.positionX = positionX
         this.positionY = positionY
-        this.velocity = 3
+        this.velocity = 5
         this.radius = 3
 
     }

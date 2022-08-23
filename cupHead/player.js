@@ -14,9 +14,9 @@ class Player {
         this.bullets = []
         
         const image = new Image()
-        image.src = '/cupHead/Images/pngwing.com (5).png'
+        image.src = '/Images/pngwing.com (6).png'
         image.onload = () => {
-            const scale = 0.05
+            const scale = 0.125
             this.image = image
             this.width = image.width * scale
             this.height = image.height * scale
@@ -75,13 +75,9 @@ class Player {
     continuity() {
         if (this.key.left.pressed) {
             this.velocity.x = -5
-
-
-
-
         }
         else if (this.key.right.pressed) {
-            this.velocity.x = 5
+            this.velocity.x = 3
         } 
         else{
             this.velocity.x = 0
@@ -95,8 +91,8 @@ class Player {
             this.velocity.y = 0
         }
         if (this.key.space.pressed){
-            const bullet = new Bullet(c, this.position.x + this.width / 2, this.position.y + this.height / 2)
-                this.bullets.push(bullet)
+            const bullet  = new Bullet(c, this.position.x + this.width / 2, this.position.y + this.height / 2)
+            this.bullets.push(bullet)
 
 
             }
@@ -163,7 +159,8 @@ class Player {
         }),
         
         addEventListener('keydown', ({ keyCode }) => {
-            switch (keyCode) {
+            
+            switch (keyCode) { 
                 case 87:
                     // player.velocity.y = -5
                     this.key.up.pressed = true
@@ -185,6 +182,8 @@ class Player {
         
                     this.key.space.pressed = true
                     break;
+
+                
                 }
             }
         );

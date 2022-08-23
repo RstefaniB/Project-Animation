@@ -8,7 +8,9 @@ const Game = {
 
   player: undefined,
   boss: undefined,
+  bossHealth: 3,
   meteorites: [],
+
   counter: 0,
 
   init() {
@@ -40,28 +42,37 @@ const Game = {
 
 
       this.player.continuity()
+
       this.player.eventListener()
-      // this.bullet.oneShot()
+
+      this.boss.update()
+
       this.meteoritesObs()
+
       this.bulletObs()
-      // this.oneShot()
-      // this.bullet
+
+      this.deleteMeteorites()
+
+      this.deleteBullet()
+
+
+
+      // this.bossDamage()
 
 
 
     }, 1000 / this.FPS)
   },
 
+
+
+
   generateAll() {
     this.player = new Player()
+
     this.boss = new Boss()
-    // this.bullets.push(new Bullet(this.c, this.player.position.x, this.player.position.y, this.velocityX, this.velocityY))
 
   },
-
-
-
-
 
   meteoritesObs() {
     this.meteorites.forEach(el => {
@@ -77,10 +88,52 @@ const Game = {
     this.player.bullets.forEach(el => {
       el.update()
     })
+  },
+
+
+
+  // bossDamage() {
+  //   this.player.bullets.forEach(bullet => {
+  //     if (bullet.positionX > this.boss.position.x) {
+
+  //       console.log('daño')
+  //         this.boss.bossHealth -= 1
+  //     }
+  // })
+    
+  //   if (this.boss.bossHealth = 0)
+  //     return gameOver()
+  // },
+
+  
+  gameOver() {
+    c.fillstyle = 'black';
+    c.fillRect(50, 50, 500, 500);
+
+  },
+  
+  deleteMeteorites() {
+    const newMeteorites = this.meteorites.filter(meteorite => meteorite.x > 0 )
+    this.meteorites = newMeteorites
+      
+    // console.log(this.meteorites.length)
+      
+    },
+  
+
+  deleteBullet() {
+  const deleteBullets = this.player.bullets.filter(bullet => bullet.positionX < canvas.width)
+  this.player.bullets = deleteBullets  
+      // this.player.bullets.forEach(bullet => bullet.pop())
+      // bullet.shift(bullet.x > this.canvas.width)
+      console.log(this.player.bullets)
+    },
+    
   }
 
 
-}
+
+
 
 
 
