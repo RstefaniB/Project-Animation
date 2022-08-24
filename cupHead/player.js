@@ -1,5 +1,6 @@
 class Player {
-    constructor() {
+    constructor(ctx) {
+        this.c = ctx
         this.position = {
             x: canvas.width * 0.1,
             y: canvas.height / 4
@@ -10,44 +11,63 @@ class Player {
             x: 0,
             y: 0
         }
+
         this.rotation = 0
         this.bullets = []
 
+        this.canShoot = false
+
+        const image = new Image()
+        image.src = '/Images/cupHeadStanding.png'
+
+        image.onload = () => {
+            // const scale = .2 //0.125
+            this.image = image
+            this.width = image.width * 0.25 //* scale
+            this.height = image.height * 1 //* scale
+            this.position = {
+                x: canvas.width / 2 - this.width /2,
+                y: canvas.height / 4
+            }
+        }
         
+        const imageDown = new Image()
+        imageDown.src = './Images/Down.png'
+
+        imageDown.onload = () => {
+            const scale = .2 //0.125
+            this.imageDown = imageDown
+            this.widthDown = imageDown.width / 11 //* scale
+            this.heightDown = imageDown.height * 1 //* scale
+            this.positionDown = {
+                x: canvas.width / 2 - this.width /2,
+                y: canvas.height / 4
+            }
+        }
+
+        const imageUp = new Image()
+        imageUp.src = './Images/Up.png'
+        imageUp.onload = () => {
+            const scale = .2 //0.125
+            this.imageUp = imageUp
+            this.widthUp = imageUp.width / 11 //* scale
+            this.heightUp = imageUp.height * 1 //* scale
+            this.positionUp = {
+                x: canvas.width / 2 - this.width /2,
+                y: canvas.height / 4
+            }
+        }
+
+        this.sprites = {
+            stand: {
+                up: imageUp,
+                down: imageDown
+            }
+        }
+
+        this.currentSprite = this.sprites.stand.up
         
-        // const image = new Image()
-        // image.src = '/Images/pngwing.com (6).png'
-        // image.onload = () => {
-        //     const scale = 0.125
-        //     this.image = image
-        //     this.width = image.width * scale
-        //     this.height = image.height * scale
-        //     this.position = {
-        //         x: canvas.width / 2 - this.width /2,
-        //         y: canvas.height / 4
-        //     }
-        // }
-
-
-        // for sprite
-        // const image = new Image()
-        // image.src = '/Images/standing.png'
-        // image.onload = () => {
-        //     const scale = .2 //0.125
-        //     this.image = image
-        //     this.width = image.width * 0.15 //* scale
-        //     this.height = image.height * 0.5 //* scale
-        //     this.position = {
-        //         x: canvas.width / 2 - this.width /2,
-        //         y: canvas.height / 4
-        //     }
-        // }
-        //end of sprite
-
-        // this.frame = 0
-        // this.image.frame = 0
-
-
+        this.frame = 0
 
         this.key = {
             right: {
@@ -66,43 +86,37 @@ class Player {
                 pressed: false
             }
         }
-        
-       
     }
-    
 
     draw() {
-   
         
-        // if (this.image) 
-        // c.drawImage(this.image, 
-        //     185.34 *  this.frame,
-        //     0,
-        //     185.34 ,
-        //     230,
-        //     this.position.x, this.position.y, this.width, this.height)
+        if (this.image) 
+        this.c.drawImage(this.image, 
+            this.width * this.frame,
+            0,
+            this.width  ,
+            this.height,
+            this.position.x, this.position.y, this.width, this.height)
 
-        
-            // if (this.image) 
-            c.filldraw = 'red'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height);
-            
-            // c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
-        //end of sprite
-        
+        if(this.imageRight)
+        this.c.drawImage(this.imageRight, 
+            this.widthDown * this.frame,
+            0,
+            this.widthDown  ,
+            this.heightDown,
+            this.position.x, this.position.y, this.widthDown, this.heightDown)
     }
-
     
     update() {
-        // this.frame++
-        // if (this.image.frame > 3) this.image.frame = 0
+        this.frame++
+        if (this.frame > 3) this.frame = 0
     
         this.draw()
         this.position.y += this.velocity.y
         this.position.x += this.velocity.x
 
         if (this.position.y + this.height > canvas.height)
-            this.position.y = canvas.height * 0.92 // ojo bug
+            this.position.y = canvas.height * 0.92 
         
         if (this.position.x < 0)
             this.position.x = 0
@@ -112,15 +126,10 @@ class Player {
             this.position.y = canvas.height - this.height
     }
 
-    // animate() {
-    //     this.image.frame++;
-    //     if (this.image.frame > 4) this.image.frame
-
-    // }
-
-    continuity() {
+    checkKeys() {
+        
         if (this.key.left.pressed) {
-            this.velocity.x = -5
+            this.velocity.x = -3
         }
         else if (this.key.right.pressed) {
             this.velocity.x = 3
@@ -129,27 +138,19 @@ class Player {
             this.velocity.x = 0
         }
         if (this.key.up.pressed) {    
-            this.velocity.y = -5
+            this.velocity.y = -3
         }
         else if (this.key.down.pressed) {
-            this.velocity.y = 5
+            this.velocity.y = 3
         }else{
             this.velocity.y = 0
         }
-        if (this.key.space.pressed){
-            const bullet  = new Bullet(c, this.position.x + this.width / 2, this.position.y + this.height / 2)
-            this.bullets.push(bullet)
-            
-       
-        
-
-
-            }
-
-            
-       
-        
-    
+        if (this.key.space.pressed && this.canShoot){
+            const bullet  = new Bullet(this.c, this.position.x + this.width / 2, this.position.y + this.height / 2)
+            this.canShoot = false
+         //   setInterval(this.bullets.push(bullet), 10000)          
+         this.bullets.push(bullet)
+        }   
         if (this.key.left.pressed && this.key.right.pressed) {
             this.velocity.x = -5 
             this.velocity.y = 0
@@ -161,12 +162,13 @@ class Player {
             this.rotation = -.15
         
         }
-        
     }
-    eventListener() { 
+
+    setEventListener() { 
 
         addEventListener('keyup', ({ keyCode }) => {
-        
+            
+            // ORDENAD ESPACIOS
             switch (keyCode) {
                 case 87:
              
@@ -189,128 +191,33 @@ class Player {
         
                     this.key.space.pressed = false
                     break;
-        
-        
             }
         }),
         
         addEventListener('keydown', ({ keyCode }) => {
             
             switch (keyCode) { 
-                case 87:
-                
+                    case 87:
                     this.key.up.pressed = true
-        
                     break;
-                case 65:
-                   
+        
+                    case 65:
                     this.key.left.pressed = true
                     break;
-                case 83:
-                   
+                    
+                    case 83:
                     this.key.down.pressed = true
                     break;
-                case 68:
-                   
+                
+                    case 68:
                     this.key.right.pressed = true
                     break;
-                case 32:
-        
+            
+                    case 32:
                     this.key.space.pressed = true
                     break;
-
-                
                 }
             }
         );
         }
-        
-    
-    
-     
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // if (key.up.pressed && key.right.pressed) {
-    //     // player.velocity.x = 2.5
-    //     player.velocity.y = -5
-    //     player.result = player.velocity.y / 0.85
-        
-
-    // }
-
-
-    
-      
-    
-    
-    // window.addEventListener('keydown', ({ keyCode }) => {
-    //     switch (keyCode) {
-    //         case 87:
-    //             // player.velocity.y = -5
-    //             key.up.pressed = true
-    
-    //             break;
-    //         case 65:
-    //             // player.velocity.x = -5
-    //             key.left.pressed = true
-    //             break;
-    //         case 83:
-    //             // player.velocity.y = 5
-    //             key.down.pressed = true
-    //             break;
-    //         case 68:
-    //             // player.velocity.x = 5
-    //             key.right.pressed = true 
-    //             break;
-    //         case 32:
-                
-    //             key.space.pressed = true   
-    //             break;
-    //     }
-    // }
-    //  ) 
-    
-    
-        
-    
-    // window.addEventListener('keyup', ({ keyCode }) => {
-    
-    //     switch (keyCode) {
-    //         case 87:
-    //             // player.velocity.y = -0.5
-    //             key.up.pressed = false
-    //             break;
-    //         case 65:
-    //             // player.velocity.x = -0.5
-    //             key.left.pressed = false
-    //             break;
-    //         case 83:
-    //             // player.velocity.y = 0.5
-    //             key.down.pressed = false
-    
-    //             break;
-    //         case 68:
-    //             // player.velocity.x = 0.5
-    //             key.right.pressed = false
-    //             break;
-    //         case 32:
-    
-    //             key.space.pressed = false          
-    //             break;
-    
-    
-    //     }
-    // })
-    
     }

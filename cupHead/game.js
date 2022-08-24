@@ -1,173 +1,128 @@
-
 const Game = {
 
   canvas: undefined,
   c: undefined,
+  width: undefined,
+  height: undefined,
+
   interval: undefined,
-  FPS: 100,
+  FPS: 60,
 
   player: undefined,
   boss: undefined,
-  bossHealth: 3,
+  bossHealth: 3, // MOVER A BOSS
   meteorites: [],
-  lives: 1,
+  lives: 1, // PLAYER
+
   counter: 0,
   frameCounter: 0,
 
   init() {
+    this.canvas = document.querySelector('canvas')
+    this.c = canvas.getContext('2d')
     this.setDimensions()
     this.start()
   },
 
   setDimensions() {
-    canvas = document.querySelector('canvas')
-    c = canvas.getContext('2d')
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
+    this.width = window.innerWidth
+    this.height = window.innerHeight
+    this.canvas.width = this.width
+    this.canvas.height = this.height
   },
 
   start() {
-
 
     this.generateAll()
 
     this.interval = setInterval(() => {
 
-      this.counter++;
+      this.counter++
 
-      c.clearRect(0, 0, canvas.width, canvas.height)
+      if (this.counter % 60 === 0) this.player.canShoot = true
+
+      this.c.clearRect(0, 0, this.width, this.height)
+
+      this.background.draw()
 
       this.player.update()
 
-      this.player.continuity()
+      this.player.setEventListener()
 
-      this.player.eventListener()
+      this.player.checkKeys()
 
       this.boss.update()
 
-      this.meteoritesObs()
+      this.drawObstacles()
 
-      this.meteoriteCollision()
+      this.checkCollision()
 
-      this.bulletObs()
+      this.createBullets()
 
-      this.deleteMeteorites()
+      this.filterMeteorites()
 
-      this.deleteBullet()
+      this.filterBullets()
 
-
-
-
-
-      this.bossDamage()
-
-
+      this.checkBulletsCollisions()
 
     }, 1000 / this.FPS)
   },
 
-
-
-
   generateAll() {
-    this.player = new Player()
-
-    this.boss = new Boss()
-
+    this.background = new Background(this.c)
+    this.player = new Player(this.c)
+    this.boss = new Boss(this.c)
   },
 
-  meteoritesObs() {
-    this.meteorites.forEach(el => {
-      el.update()
-    })
-    if (this.counter % 60 === 0) {
-      const meteorite = new Meteorite();
-      this.meteorites.push(meteorite)
-    }
+  drawObstacles() {
+    this.meteorites.forEach(meteorite => meteorite.update())
+    if (this.counter % 60 === 0) this.meteorites.push(new Meteorite(this.c))
   },
 
-  bulletObs() {
-    this.player.bullets.forEach(el => {
-      el.update()
-    })
+  createBullets() {
+    this.player.bullets.forEach(bullet => bullet.update())
   },
 
-
-
-
-
-
-  // bossDamage() {
-  //   this.player.bullets.forEach(bullet => {
-  //     if (bullet.positionX > this.boss.position.x) {
-
-  //       console.log('daño')
-  //         this.boss.bossHealth -= 1
-  //     }
-  // })
-
-  //   if (this.boss.bossHealth = 0)
-  //     return gameOver()
-  // },
-
-
-  gameOver() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "red";
-    ctx.font = "60px Verdana";
-    ctx.fillText("Game Over!", canvas.width / 6, 200);
-
+  filterMeteorites() {
+    this.meteorites = this.meteorites.filter(meteorite => meteorite.x > 0)
   },
 
-
-  deleteMeteorites() {
-    const newMeteorites = this.meteorites.filter(meteorite => meteorite.x > 0)
-    this.meteorites = newMeteorites
-
-    // console.log(this.meteorites.length)
-
+  filterBullets() {
+    this.player.bullets = this.player.bullets.filter(bullet => bullet.positionX < canvas.width)
   },
 
-
-  deleteBullet() {
-    const deleteBullets = this.player.bullets.filter(bullet => bullet.positionX < canvas.width)
-    this.player.bullets = deleteBullets
-
-  },
-
-  meteoriteCollision() {
-
+  checkCollision() {
     this.meteorites.forEach(meteorite => {
-
       if (this.player.position.y < meteorite.y + 30
-        && this.player.position.y + 50 > meteorite.y
-        && this.player.position.x + 50 > meteorite.x
+        && this.player.position.y + this.heigth > meteorite.y
+        && this.player.position.x + this.width > meteorite.x
         && this.player.position.x < meteorite.x + 30) {
 
         this.lives--
+        
         if (this.lives === 0) {
-          console.log('gameOver')
-
+        console.log('gameOver')
         }
       }
     })
   },
 
-  bossDamage() {
+  checkBulletsCollisions() {
     this.player.bullets.forEach(bullet => {
-      if (bullet.positionX > this.boss.position.x ) {
-
-        this.bossHealth-- 
-      if (this.bossHealth === 0) 
-        console.log('win')        
+      if (bullet.positionX > this.boss.position.x) { 
+        this.bossHealth--
+      if (this.bossHealth === 0) this.winGame()
       }
     })
-  }
-}
+  },
 
+  winGame() {
+    console.log('GANASTE PENDEJO')
+    alert('YOU WON')
+  }
+
+  
+}
 
 
 

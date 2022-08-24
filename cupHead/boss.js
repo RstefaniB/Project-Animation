@@ -1,11 +1,13 @@
 class Boss {
-    constructor () {
+    constructor (ctx) {
+        this.c = ctx
         this.position = {
             x: 950,
             y: 50
         }
         this.width = 300
         this.height = canvas.height
+
         const image = new Image()
         image.src = '/Images/boss.png'
         image.onload = () => {
@@ -18,24 +20,16 @@ class Boss {
                 y: canvas.height / 20
             }
         }
-    
-        
-
-    
     }
+
     draw() {
-
         if (this.image) 
-        c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
-        
+        this.c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
     }
 
-    
     update(){
         this.draw()
     }
-    
-    
 }
 
 
