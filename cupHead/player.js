@@ -12,6 +12,7 @@ class Player {
             y: 0
         }
 
+        this.magnitud = 5
         this.rotation = 0
         this.bullets = []
 
@@ -129,19 +130,19 @@ class Player {
     checkKeys() {
         
         if (this.key.left.pressed) {
-            this.velocity.x = -3
+            this.velocity.x = -this.magnitud
         }
         else if (this.key.right.pressed) {
-            this.velocity.x = 3
+            this.velocity.x = this.magnitud
         } 
         else{
             this.velocity.x = 0
         }
         if (this.key.up.pressed) {    
-            this.velocity.y = -3
+            this.velocity.y = -this.magnitud
         }
         else if (this.key.down.pressed) {
-            this.velocity.y = 3
+            this.velocity.y = this.magnitud
         }else{
             this.velocity.y = 0
         }
@@ -170,27 +171,26 @@ class Player {
             
             // ORDENAD ESPACIOS
             switch (keyCode) {
-                case 87:
-             
-                    this.key.up.pressed = false
-                    break;
-                case 65:
-                    
-                    this.key.left.pressed = false
-                    break;
-                case 83:
-                 
-                    this.key.down.pressed = false
-        
-                    break;
+                case 87:             
+                this.key.up.pressed = false
+                break;
+
+                case 65:                    
+                this.key.left.pressed = false
+                break;
+
+                case 83:                 
+                this.key.down.pressed = false        
+                break;
+
                 case 68:
+                this.key.right.pressed = false
+                break;
                   
-                    this.key.right.pressed = false
-                    break;
                 case 32:
+                this.key.space.pressed = false
+                break;
         
-                    this.key.space.pressed = false
-                    break;
             }
         }),
         

@@ -10,8 +10,9 @@ const Game = {
 
   player: undefined,
   boss: undefined,
-  bossHealth: 3, // MOVER A BOSS
+  bossHealth: 30, // MOVER A BOSS
   meteorites: [],
+  mete : [],
   lives: 1, // PLAYER
 
   counter: 0,
@@ -39,8 +40,8 @@ const Game = {
 
       this.counter++
 
-      if (this.counter % 60 === 0) this.player.canShoot = true
-
+      if (this.counter % 30 === 0) this.player.canShoot = true
+     
       this.c.clearRect(0, 0, this.width, this.height)
 
       this.background.draw()
@@ -72,11 +73,13 @@ const Game = {
     this.background = new Background(this.c)
     this.player = new Player(this.c)
     this.boss = new Boss(this.c)
+    this.audio()
+    
   },
 
   drawObstacles() {
     this.meteorites.forEach(meteorite => meteorite.update())
-    if (this.counter % 60 === 0) this.meteorites.push(new Meteorite(this.c))
+    if (this.counter % 30 === 0) this.meteorites.push(new Meteorite(this.c))
   },
 
   createBullets() {
@@ -93,60 +96,72 @@ const Game = {
 
   checkCollision() {
     this.meteorites.forEach(meteorite => {
-      if (this.player.position.y < meteorite.y + 30
-        && this.player.position.y + this.heigth > meteorite.y
-        && this.player.position.x + this.width > meteorite.x
-        && this.player.position.x < meteorite.x + 30) {
+      if (this.player.position.y < meteorite.y + 40
+        && this.player.position.y + 67 > meteorite.y
+        && this.player.position.x + 80 > meteorite.x
+        && this.player.position.x < meteorite.x + 48.14) {
 
         this.lives--
         
         if (this.lives === 0) {
-        console.log('gameOver')
+        this.drawLose()
         }
       }
     })
   },
 
   checkBulletsCollisions() {
-    this.player.bullets.forEach(bullet => {
-      if (bullet.positionX > this.boss.position.x) { 
+    this.player.bullets.forEach((bullet , i)=> {
+      if (bullet.positionX > this.boss.position.x + this.boss.width / 2) { 
         this.bossHealth--
-      if (this.bossHealth === 0) this.winGame()
+        this.player.bullets.splice(i, 1)
+        console.log(this.bossHealth)
+      if (this.bossHealth === 0) {
+          this.drawWin()
+        clearInterval(this.interval)    
+      }
       }
     })
   },
 
-  winGame() {
-    console.log('GANASTE PENDEJO')
-    alert('YOU WON')
+  drawWin() {
+    location.href = '/Images/winBoard.jpeg'
+},
+
+  drawLose() {
+    location.href = './gamveOver.html'
+  },
+  audio() {
+  var audio = new Audio('./backGroundMusic/Cuphead-OST-Ruse-Of-An-Ooze-Music.mp3');
+  audio.play();
   }
 
-  
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

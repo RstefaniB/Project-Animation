@@ -7,28 +7,41 @@ class Boss {
         }
         this.width = 300
         this.height = canvas.height
+        this.frame = 0
 
         const image = new Image()
-        image.src = '/Images/boss.png'
+        image.src = '/Images/Boss animation.png'
+
         image.onload = () => {
-            const scale = 1
             this.image = image
-            this.width = image.width * scale
-            this.height = image.height * scale
+            this.width = 439 //* scale
+            this.height = image.height * 1 //* scale
             this.position = {
-                x: canvas.width * 0.73 ,
-                y: canvas.height / 20
+                x: canvas.width * 0.70,
+                y: canvas.height / 4
             }
         }
     }
 
     draw() {
         if (this.image) 
-        this.c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
+        this.c.drawImage(this.image, 
+            this.width * this.frame,
+            0,
+            this.width  ,
+            this.height,
+            this.position.x, this.position.y, this.width, this.height)
     }
 
     update(){
+        this.animate(30)
         this.draw()
+    }
+
+    animate(rotation) {
+        this.frame++
+        if (this.frame > rotation) this.frame = 0
+        
     }
 }
 
