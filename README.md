@@ -1,5 +1,5 @@
 # Project-Animation
-Animated video game as part of the bootcamp's requirement of Ironhack Web Development program in Madrid, España.
+Animated video game as part of the Ironhack Web Development bootcamp program's requirements.
 
 ↑ W
 ↓ S
